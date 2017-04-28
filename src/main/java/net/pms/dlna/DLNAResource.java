@@ -2958,7 +2958,7 @@ public abstract class DLNAResource extends HTTPResource implements Cloneable, Ru
 				) + "_"
 			);
 		}
-		if (StringUtils.isNotBlank(url)) {
+		if (StringUtils.isNotBlank(url) && renderer.isImageSupported()) {
 			String ciFlag;
 			/*
 			 * Some Panasonic TV's can't handle if the thumbnails have the CI
@@ -2999,8 +2999,12 @@ public abstract class DLNAResource extends HTTPResource implements Cloneable, Ru
 			addAttribute(sb, "xmlns:dlna", "urn:schemas-dlna-org:metadata-1-0/");
 			addAttribute(sb, "dlna:profileID", thumbnailProfile);
 			endTag(sb);
-			sb.append(albumArtURL);
+			sb.append(albumArtURL).append("?albumArt=true");
 			closeTag(sb, "upnp:albumArtURI");
+			openTag(sb, "upnp:icon");
+			endTag(sb);
+			sb.append(albumArtURL);
+			closeTag(sb, "upnp:icon");
 		}
 	}
 

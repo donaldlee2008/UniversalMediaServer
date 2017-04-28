@@ -43,6 +43,7 @@ public class FormatConfiguration {
 	private ArrayList<SupportSpec> supportSpecs;
 	public static final String THREEGPP = "3gp";
 	public static final String THREEGPP2 = "3g2";
+	public static final String THREEG2A = "3g2a";
 	public static final String THREEGA = "3ga";
 	public static final String AAC = "aac";
 	public static final String AAC_HE = "aac-he";

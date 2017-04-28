@@ -139,6 +139,20 @@ public class DLNAMediaAudio extends DLNAMediaLang implements Cloneable {
 	 * @return True if the audio codec is 3GA.
 	 */
 	public boolean is3GA() {
+		return isTHREEGA() || isTHREEG2A();
+	}
+
+	/**
+	 * @return True if the audio codec is THREEG2A.
+	 */
+	public boolean isTHREEG2A() {
+		return FormatConfiguration.THREEG2A.equalsIgnoreCase(getCodecA());
+	}
+
+	/**
+	 * @return True if the audio codec is THREEGA.
+	 */
+	public boolean isTHREEGA() {
 		return FormatConfiguration.THREEGA.equalsIgnoreCase(getCodecA());
 	}
 
@@ -150,21 +164,21 @@ public class DLNAMediaAudio extends DLNAMediaLang implements Cloneable {
 	}
 
 	/**
-	 * @return True if the audio codec is AAC LC.
+	 * @return True if the audio codec is AAC-LC.
 	 */
 	public boolean isAACLC() {
 		return FormatConfiguration.AAC.equalsIgnoreCase(getCodecA());
 	}
 
 	/**
-	 * @return True if the audio codec is AAC HE.
+	 * @return True if the audio codec is HE-AAC.
 	 */
 	public boolean isHEAAC() {
 		return FormatConfiguration.AAC_HE.equalsIgnoreCase(getCodecA());
 	}
 
 	/**
-	 * @return True if the audio codec is AAC LTP.
+	 * @return True if the audio codec is AAC-LTP.
 	 */
 	public boolean isAACLTP() {
 		return FormatConfiguration.AAC_LTP.equalsIgnoreCase(getCodecA());
@@ -174,7 +188,7 @@ public class DLNAMediaAudio extends DLNAMediaLang implements Cloneable {
 	 * @return True if the audio codec is AAC version 4.
 	 */
 	public boolean isAACV4() {
-		return FormatConfiguration.AACV4.equalsIgnoreCase(getCodecA());
+		return FormatConfiguration.AACV4.equalsIgnoreCase("version 4");
 	}
 
 	/**
@@ -276,13 +290,6 @@ public class DLNAMediaAudio extends DLNAMediaLang implements Cloneable {
 	}
 
 	/**
-	 * @return True if the audio codec is Matroska Audio.
-	 */
-	public boolean isMKA() {
-		return FormatConfiguration.MKA.equalsIgnoreCase(getCodecA());
-	}
-
-	/**
 	 * @return True if the audio codec is MLP.
 	 */
 	public boolean isMLP() {
@@ -329,13 +336,6 @@ public class DLNAMediaAudio extends DLNAMediaLang implements Cloneable {
 	 */
 	public boolean isPCM() {
 		return FormatConfiguration.LPCM.equals(getCodecA()) || getCodecA() != null && getCodecA().startsWith("pcm");
-	}
-
-	/**
-	 * @return True if the audio codec is OGA.
-	 */
-	public boolean isOGA() {
-		return FormatConfiguration.OGA.equalsIgnoreCase(getCodecA());
 	}
 
 	/**
@@ -448,9 +448,7 @@ public class DLNAMediaAudio extends DLNAMediaLang implements Cloneable {
 	 * @return The standardized name.
 	 */
 	public String getAudioCodec() {
-		if (is3GA()) {
-			return "3GA";
-		} else if (isAACLC()) {
+		if (isAACLC()) {
 			return "AAC";
 		} else if (isAACLTP()) {
 			return "AAC-LTP";
@@ -484,8 +482,6 @@ public class DLNAMediaAudio extends DLNAMediaLang implements Cloneable {
 			return "FLAC";
 		} else if (isHEAAC()) {
 			return "HE-AAC";
-		} else if (isMKA()) {
-			return "Matroska Audio";
 		} else if (isMLP()) {
 			return "MLP";
 		} else if (isMonkeysAudio()) {
@@ -513,7 +509,7 @@ public class DLNAMediaAudio extends DLNAMediaLang implements Cloneable {
 		} else if (isTTA()) {
 			return "TTA";
 		} else if (isWAV()) {
-			return "WAV";
+-			return "WAV";
 		} else if (isWavPack()) {
 			return "WavPack";
 		} else if (isWMA()) {
@@ -552,7 +548,6 @@ public class DLNAMediaAudio extends DLNAMediaLang implements Cloneable {
 			result.append(", ");
 		}
 		result.append("Audio Codec: ").append(getAudioCodec());
-
 		result.append(", Bitrate: ").append(getBitRate());
 		if (getBitsperSample() != 16) {
 			result.append(", Bits per Sample: ").append(getBitsperSample());

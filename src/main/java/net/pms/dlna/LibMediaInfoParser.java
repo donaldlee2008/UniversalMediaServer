@@ -85,7 +85,6 @@ public class LibMediaInfoParser {
 				// set General
 				getFormat(general, media, currentAudioTrack, MI.Get(general, 0, "Format"), file);
 				getFormat(general, media, currentAudioTrack, MI.Get(general, 0, "CodecID").trim(), file);
-				getFormat(general, media, currentAudioTrack, MI.Get(general, 0, "InternetMediaType"), file);
 				media.setDuration(getDuration(MI.Get(general, 0, "Duration/String1")));
 				media.setBitrate(getBitrate(MI.Get(general, 0, "OverallBitRate")));
 				value = MI.Get(general, 0, "Cover_Data");
@@ -461,10 +460,18 @@ public class LibMediaInfoParser {
 
 		if (isBlank(value)) {
 			return;
-		} else if (value.startsWith("3g2")) {
-			format = FormatConfiguration.THREEGPP2;
-		} else if (value.startsWith("3gp")) {
-			format = FormatConfiguration.THREEGPP;
+		} else if (value.startsWith("3gpp2")) {
+			if (media.getCodecV() != null) {
+				format = FormatConfiguration.THREEGPP2;
+			} else {
+				format = FormatConfiguration.THREEG2A;
+			}
+		} else if (value.startsWith("3gpp media")) {
+			if (media.getCodecV() != null) {
+				format = FormatConfiguration.THREEGPP;
+			} else {
+				format = FormatConfiguration.THREEGA;
+			}
 		} else if (value.startsWith("matroska")) {
 			format = FormatConfiguration.MATROSKA;
 		} else if (value.equals("avi") || value.equals("opendml")) {
@@ -477,11 +484,15 @@ public class LibMediaInfoParser {
 			format = FormatConfiguration.WEBM;
 		} else if (value.equals("qt") || value.equals("quicktime")) {
 			format = FormatConfiguration.MOV;
-		} else if (!value.startsWith("3gp") && "audio/mp4".equals(value)) {
+		} else if (value.contains("m4a")) {
 			format = FormatConfiguration.M4A;
-		} else if (!"audio/mp4".equals(value) && (value.equals("isom") || value.startsWith("mp4") || value.contains("xvid") ||
-			   value.equals("20") || value.equals("m4v") || value.startsWith("mpeg-4"))) {
-			format = FormatConfiguration.MP4;
+		} else if (value.equals("isom") || value.startsWith("mp4") || value.contains("xvid") ||
+			   value.equals("20") || value.equals("m4v")) {
+			if (media.getCodecV() != null) {
+				format = FormatConfiguration.MP4;
+			} else {
+				format = FormatConfiguration.M4A;
+			}
 		} else if (value.contains("mpeg-ps")) {
 			format = FormatConfiguration.MPEGPS;
 		} else if (value.contains("mpeg-ts") || value.equals("bdav")) {
@@ -573,16 +584,14 @@ public class LibMediaInfoParser {
 			format = FormatConfiguration.TTA;
 		} else if (value.equals("55") || value.equals("a_mpeg/l3")) {
 			format = FormatConfiguration.MP3;
-		} else if (!value.startsWith("version 4") && value.equals("lc")) {
-			format = FormatConfiguration.AAC;
-		} else if (!value.startsWith("version 4") && value.startsWith("he-aac")) {
-			format = FormatConfiguration.AAC_HE;
-		} else if (!value.startsWith("version 4") && value.equals("ltp")) {
-			format = FormatConfiguration.AAC_LTP;
-		} else if (value.equals("aac")) {
-//			if (value.startsWith("version 4")) {
+		} else if (value.equals("version 4") && media.getCodecV() == null && audio.getCodecA() != null && audio.getCodecA().contains("aac")) {
 			format = FormatConfiguration.AACV4;
-//			}
+		} else if (value.equals("lc")) {
+			format = FormatConfiguration.AAC;
+		} else if (value.startsWith("he-aac")) {
+			format = FormatConfiguration.AAC_HE;
+		} else if (value.equals("ltp")) {
+			format = FormatConfiguration.AAC_LTP;
 		} else if (value.startsWith("adpcm")) {
 			format = FormatConfiguration.ADPCM;
 		} else if (value.equals("pcm") || (value.equals("1") && (audio.getCodecA() == null || !audio.getCodecA().equals(FormatConfiguration.DTS)))) {
@@ -638,7 +647,7 @@ public class LibMediaInfoParser {
 			format = FormatConfiguration.WAVPACK;
 		} else if (value.contains("mlp")) {
 			format = FormatConfiguration.MLP;
-		} else if (value.contains("atrac3")) {
+		} else if (value.contains("atrac")) {
 			format = FormatConfiguration.ATRAC;
 			if (media.getCodecV() == null) {
 				media.setContainer(FormatConfiguration.ATRAC);

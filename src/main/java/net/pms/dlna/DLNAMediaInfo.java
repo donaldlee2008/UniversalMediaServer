@@ -1498,6 +1498,9 @@ public class DLNAMediaInfo implements Cloneable {
 				case FormatConfiguration.THREEGA:
 					mimeType = HTTPResource.AUDIO_THREEGPPA_TYPEMIME;
 					break;
+				case FormatConfiguration.THREEG2A:
+					mimeType = HTTPResource.AUDIO_THREEGPP2A_TYPEMIME;
+					break;
 				case FormatConfiguration.TRUEHD:
 					mimeType = HTTPResource.AUDIO_TRUEHD_TYPEMIME;
 					break;
@@ -1525,9 +1528,9 @@ public class DLNAMediaInfo implements Cloneable {
 					mimeType = HTTPResource.MATROSKA_TYPEMIME;
 				} else if ("ogg".equals(container)) {
 					mimeType = HTTPResource.OGG_TYPEMIME;
-				} else if ("3gp".equals(container)) {
+				} else if (container.startsWith("3gpp media")) {
 					mimeType = HTTPResource.THREEGPP_TYPEMIME;
-				} else if ("3g2".equals(container)) {
+				} else if (container.startsWith("3gpp2")) {
 					mimeType = HTTPResource.THREEGPP2_TYPEMIME;
 				} else if ("webm".equals(container)) {
 					mimeType = HTTPResource.WEBM_TYPEMIME;
@@ -1549,9 +1552,9 @@ public class DLNAMediaInfo implements Cloneable {
 			} else if (codecV == null && codecA != null) {
 				if ("ogg".equals(container)) {
 					mimeType = HTTPResource.AUDIO_OGA_TYPEMIME;
-				} else if ("3gp".equals(container)) {
+				} else if (container.startsWith("3gpp media")) {
 					mimeType = HTTPResource.AUDIO_THREEGPPA_TYPEMIME;
-				} else if ("3g2".equals(container)) {
+				} else if (container.startsWith("3gpp2")) {
 					mimeType = HTTPResource.AUDIO_THREEGPP2A_TYPEMIME;
 				} else if ("adts".equals(container)) {
 					mimeType = HTTPResource.AUDIO_ADTS_TYPEMIME;
@@ -1573,9 +1576,9 @@ public class DLNAMediaInfo implements Cloneable {
 					mimeType = HTTPResource.AUDIO_WMA_TYPEMIME;
 				} else if (codecA.contains("pcm") || codecA.contains("wav") || codecA.contains("dts")) {
 					mimeType = HTTPResource.AUDIO_WAV_TYPEMIME;
-				} else if (codecA.contains("aac") || codecA.contains("als")) {
+				} else if (codecA.contains("aac") || codecA.equals("als")) {
 					mimeType = HTTPResource.AUDIO_AAC_TYPEMIME;
-				} else if (codecA.contains("alac")) {
+				} else if (codecA.equals("alac")) {
 					mimeType = HTTPResource.AUDIO_M4A_TYPEMIME;
 				} else if (codecA.equals(FormatConfiguration.TRUEHD)) {
 					mimeType = HTTPResource.AUDIO_TRUEHD_TYPEMIME;
@@ -1788,7 +1791,7 @@ public class DLNAMediaInfo implements Cloneable {
 			}
 
 		} else if (getAudioTrackCount() > 0) {
-			result.append(", Bitrate: ").append(getBitrate());
+			result.append(", Overall Bitrate: ").append(getBitrate());
 			result.append(", Duration: ").append(getDurationString());
 			appendAudioTracks(result);
 		}
