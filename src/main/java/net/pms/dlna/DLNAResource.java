@@ -2958,7 +2958,7 @@ public abstract class DLNAResource extends HTTPResource implements Cloneable, Ru
 				) + "_"
 			);
 		}
-		if (StringUtils.isNotBlank(url) && renderer.isImageSupported()) {
+		if (StringUtils.isNotBlank(url) && !format.isAudio()) {
 			String ciFlag;
 			/*
 			 * Some Panasonic TV's can't handle if the thumbnails have the CI
