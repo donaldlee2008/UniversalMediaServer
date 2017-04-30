@@ -509,7 +509,7 @@ public class DLNAMediaAudio extends DLNAMediaLang implements Cloneable {
 		} else if (isTTA()) {
 			return "TTA";
 		} else if (isWAV()) {
--			return "WAV";
+			return "WAV";
 		} else if (isWavPack()) {
 			return "WavPack";
 		} else if (isWMA()) {
