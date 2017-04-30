@@ -1794,7 +1794,7 @@ public abstract class DLNAResource extends HTTPResource implements Cloneable, Ru
 	 * TimeSeekRange.DLNA.ORG (seek by time) headers; the second allows it to send RANGE (seek by byte)
 	 * headers.
 	 *
-	 *    00 - no seeking (or even pausing) allowed
+	 *    00 - not authorized by the DLNA standard
 	 *    01 - seek by byte
 	 *    10 - seek by time
 	 *    11 - seek by both
@@ -1860,7 +1860,7 @@ public abstract class DLNAResource extends HTTPResource implements Cloneable, Ru
 	private String dlnaOrgCiFlags;
 //		String dlnaOrgCiFlags = null;
 
-//		if (!RendererConfiguration.isVideoSupported() || !RendererConfiguration.isAudioSupported()) {
+//		if (!format.isCompatible(newChild.media, defaultRenderer)) {
 //			dlnaOrgCiFlags = "DLNA.ORG_CI=1";
 //		}
 
